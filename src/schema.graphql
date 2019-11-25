@@ -1,0 +1,80 @@
+scalar DateTime
+
+type Query {
+  games: [Game!]!
+}
+
+type Player {
+  id: ID!
+  name: String!
+  game: Game!
+  score: Int
+  responseTime: Int
+  answers: [Answer!]!
+}
+
+type Answer {
+  id: ID!
+  choice: Choice!
+  player: Player!
+}
+
+type Question {
+  id: ID!
+  duration: Int!
+  title: String!
+  choices: [Choice!]!
+  goodChoice: Choice
+  answers: [Answer!]!
+  order: Int!
+  user: User!
+  game: Game!
+  launched: DateTime
+}
+
+type Choice {
+  id: ID!
+  title: String!
+  question: Question!
+  answers: [Answer!]!
+  user: User!
+}
+
+type Game {
+  id: ID!
+  title: String!
+  open: Boolean!
+  players: [Player!]!
+  questions: [Question!]!
+  currentQuestion: Question
+  user: User!
+}
+
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  email: String!
+  games: [Game!]!
+}
+
+type Mutation {
+  login(email: String!, password: String!): AuthPayload
+  newGame(title: String!): Game!
+  newQuestion(
+    gameId: ID!
+    title: String!
+    duration: Int!
+    order: Int!
+  ): Question!
+  newChoice(questionId: ID!, title: String!): Choice!
+  newPlayer(gameId: ID!, name: String!): Player!
+  newAnswer(choiceId: ID!, playerId: ID!): Answer!
+}
+
+type Subscription {
+  updateGame(gameId: ID!): Game
+}
