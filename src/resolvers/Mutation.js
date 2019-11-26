@@ -30,6 +30,32 @@ function newGame(parent, args, context, info) {
   });
 }
 
+function updateGame(parent, args, context, info) {
+  const userId = getUserId(context);
+  let updateObject = {};
+
+  if (args.data.title !== undefined) {
+    updateObject["title"] = args.data.title;
+  }
+
+  if (args.data.open !== undefined) {
+    updateObject["open"] = args.data.open;
+  }
+
+  if (args.data.currentQuestion !== undefined) {
+    updateObject["currentQuestion"] = args.data.currentQuestion;
+  }
+
+  return context.prisma.updateGame({
+    data: {
+      ...updateObject
+    },
+    where: {
+      id: args.gameId
+    }
+  });
+}
+
 function newQuestion(parent, args, context, info) {
   const userId = getUserId(context);
 
@@ -81,5 +107,6 @@ module.exports = {
   newQuestion,
   newChoice,
   newPlayer,
-  newAnswer
+  newAnswer,
+  updateGame
 };

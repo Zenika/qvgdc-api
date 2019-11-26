@@ -50,6 +50,12 @@ type Game {
   user: User!
 }
 
+input GameInput {
+  title: String
+  open: Boolean
+  currentQuestion: ID
+}
+
 type AuthPayload {
   token: String
   user: User
@@ -64,6 +70,7 @@ type User {
 type Mutation {
   login(email: String!, password: String!): AuthPayload
   newGame(title: String!): Game!
+  updateGame(gameId: ID!, data: GameInput): Game!
   newQuestion(
     gameId: ID!
     title: String!
