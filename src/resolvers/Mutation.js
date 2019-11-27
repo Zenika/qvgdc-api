@@ -84,7 +84,12 @@ async function newPlayer(parent, args, context, info) {
     name: args.name
   });
 
-  if (playerExists) {
+  const notOpenGameId = await context.primsa.$exists.game({
+    id: args.gameId,
+    open: false
+  });
+
+  if (playerExists || notOpenGameId) {
     throw new Error(`Nom de joueur déjà pris : ${args.name}`);
   }
 
