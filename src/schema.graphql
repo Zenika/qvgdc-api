@@ -1,7 +1,7 @@
 scalar DateTime
 
 type Query {
-  games: [Game!]!
+  games(open: Boolean!): [Game!]!
 }
 
 type Player {
