@@ -34,6 +34,16 @@ async function newGame(parent, args, context, info) {
   return game;
 }
 
+async function deleteGame(parent, args, context, info) {
+  const userId = getUserId(context);
+
+  const game = await context.prisma.deleteGame({
+    id: args.gameId
+  });
+
+  return game;
+}
+
 function updateGame(parent, args, context, info) {
   const userId = getUserId(context);
   let updateObject = {};
@@ -117,5 +127,6 @@ module.exports = {
   newChoice,
   newPlayer,
   newAnswer,
-  updateGame
+  updateGame,
+  deleteGame
 };
