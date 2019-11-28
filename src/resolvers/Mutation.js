@@ -24,8 +24,6 @@ async function login(parent, args, context, info) {
 async function newGame(parent, args, context, info) {
   const userId = getUserId(context);
 
-  console.log(userId);
-
   const game = await context.prisma.createGame({
     title: args.title,
     user: {
