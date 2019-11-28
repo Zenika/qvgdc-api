@@ -10,6 +10,18 @@ async function games(parent, args, context, info) {
   return games;
 }
 
+async function getUser(parent, args, context, info) {
+  const where = {
+    id: args.id
+  };
+
+  const user = await context.prisma.user({
+    where
+  });
+
+  return user;
+}
+
 module.exports = {
   games
 };
