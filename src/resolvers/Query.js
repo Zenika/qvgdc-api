@@ -12,6 +12,16 @@ async function games(parent, args, context, info) {
   return games;
 }
 
+async function game(parent, args, context, info) {
+  const userId = getUserId(context);
+
+  const game = await context.prisma.game({
+    id: args.gameId
+  });
+
+  return game;
+}
+
 async function me(parent, args, context, info) {
   const userId = getUserId(context);
 
@@ -24,5 +34,6 @@ async function me(parent, args, context, info) {
 
 module.exports = {
   games,
+  game,
   me
 };
