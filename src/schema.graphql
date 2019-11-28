@@ -55,6 +55,7 @@ type Game {
 input GameInput {
   title: String
   open: Boolean
+  finish: Boolean
   currentQuestion: ID
 }
 
