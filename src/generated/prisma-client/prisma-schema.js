@@ -534,6 +534,7 @@ type Game {
   id: ID!
   title: String!
   open: Boolean!
+  finish: Boolean!
   players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player!]
   questions(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question!]
   currentQuestion: Question
@@ -550,6 +551,7 @@ input GameCreateInput {
   id: ID
   title: String!
   open: Boolean
+  finish: Boolean
   players: PlayerCreateManyWithoutGameInput
   questions: QuestionCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
@@ -575,6 +577,7 @@ input GameCreateWithoutPlayersInput {
   id: ID
   title: String!
   open: Boolean
+  finish: Boolean
   questions: QuestionCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
   user: UserCreateOneWithoutGamesInput!
@@ -584,6 +587,7 @@ input GameCreateWithoutQuestionsInput {
   id: ID
   title: String!
   open: Boolean
+  finish: Boolean
   players: PlayerCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
   user: UserCreateOneWithoutGamesInput!
@@ -593,6 +597,7 @@ input GameCreateWithoutUserInput {
   id: ID
   title: String!
   open: Boolean
+  finish: Boolean
   players: PlayerCreateManyWithoutGameInput
   questions: QuestionCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
@@ -610,12 +615,15 @@ enum GameOrderByInput {
   title_DESC
   open_ASC
   open_DESC
+  finish_ASC
+  finish_DESC
 }
 
 type GamePreviousValues {
   id: ID!
   title: String!
   open: Boolean!
+  finish: Boolean!
 }
 
 input GameScalarWhereInput {
@@ -649,6 +657,8 @@ input GameScalarWhereInput {
   title_not_ends_with: String
   open: Boolean
   open_not: Boolean
+  finish: Boolean
+  finish_not: Boolean
   AND: [GameScalarWhereInput!]
   OR: [GameScalarWhereInput!]
   NOT: [GameScalarWhereInput!]
@@ -675,6 +685,7 @@ input GameSubscriptionWhereInput {
 input GameUpdateInput {
   title: String
   open: Boolean
+  finish: Boolean
   players: PlayerUpdateManyWithoutGameInput
   questions: QuestionUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
@@ -684,11 +695,13 @@ input GameUpdateInput {
 input GameUpdateManyDataInput {
   title: String
   open: Boolean
+  finish: Boolean
 }
 
 input GameUpdateManyMutationInput {
   title: String
   open: Boolean
+  finish: Boolean
 }
 
 input GameUpdateManyWithoutUserInput {
@@ -725,6 +738,7 @@ input GameUpdateOneRequiredWithoutQuestionsInput {
 input GameUpdateWithoutPlayersDataInput {
   title: String
   open: Boolean
+  finish: Boolean
   questions: QuestionUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
   user: UserUpdateOneRequiredWithoutGamesInput
@@ -733,6 +747,7 @@ input GameUpdateWithoutPlayersDataInput {
 input GameUpdateWithoutQuestionsDataInput {
   title: String
   open: Boolean
+  finish: Boolean
   players: PlayerUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
   user: UserUpdateOneRequiredWithoutGamesInput
@@ -741,6 +756,7 @@ input GameUpdateWithoutQuestionsDataInput {
 input GameUpdateWithoutUserDataInput {
   title: String
   open: Boolean
+  finish: Boolean
   players: PlayerUpdateManyWithoutGameInput
   questions: QuestionUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
@@ -798,6 +814,8 @@ input GameWhereInput {
   title_not_ends_with: String
   open: Boolean
   open_not: Boolean
+  finish: Boolean
+  finish_not: Boolean
   players_every: PlayerWhereInput
   players_some: PlayerWhereInput
   players_none: PlayerWhereInput

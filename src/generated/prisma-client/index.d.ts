@@ -306,7 +306,9 @@ export type GameOrderByInput =
   | "title_ASC"
   | "title_DESC"
   | "open_ASC"
-  | "open_DESC";
+  | "open_DESC"
+  | "finish_ASC"
+  | "finish_DESC";
 
 export type PlayerOrderByInput =
   | "id_ASC"
@@ -557,6 +559,8 @@ export interface GameWhereInput {
   title_not_ends_with?: Maybe<String>;
   open?: Maybe<Boolean>;
   open_not?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
+  finish_not?: Maybe<Boolean>;
   players_every?: Maybe<PlayerWhereInput>;
   players_some?: Maybe<PlayerWhereInput>;
   players_none?: Maybe<PlayerWhereInput>;
@@ -730,6 +734,7 @@ export interface GameCreateWithoutPlayersInput {
   id?: Maybe<ID_Input>;
   title: String;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   questions?: Maybe<QuestionCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
   user: UserCreateOneWithoutGamesInput;
@@ -790,6 +795,7 @@ export interface GameCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   title: String;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   players?: Maybe<PlayerCreateManyWithoutGameInput>;
   questions?: Maybe<QuestionCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
@@ -877,6 +883,7 @@ export interface GameCreateWithoutQuestionsInput {
   id?: Maybe<ID_Input>;
   title: String;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   players?: Maybe<PlayerCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
   user: UserCreateOneWithoutGamesInput;
@@ -1018,6 +1025,7 @@ export interface GameUpdateOneRequiredWithoutPlayersInput {
 export interface GameUpdateWithoutPlayersDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   questions?: Maybe<QuestionUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
   user?: Maybe<UserUpdateOneRequiredWithoutGamesInput>;
@@ -1138,6 +1146,7 @@ export interface GameUpdateWithWhereUniqueWithoutUserInput {
 export interface GameUpdateWithoutUserDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   players?: Maybe<PlayerUpdateManyWithoutGameInput>;
   questions?: Maybe<QuestionUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
@@ -1461,6 +1470,7 @@ export interface GameUpdateOneRequiredWithoutQuestionsInput {
 export interface GameUpdateWithoutQuestionsDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   players?: Maybe<PlayerUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
   user?: Maybe<UserUpdateOneRequiredWithoutGamesInput>;
@@ -1647,6 +1657,8 @@ export interface GameScalarWhereInput {
   title_not_ends_with?: Maybe<String>;
   open?: Maybe<Boolean>;
   open_not?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
+  finish_not?: Maybe<Boolean>;
   AND?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
   OR?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
   NOT?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
@@ -1660,6 +1672,7 @@ export interface GameUpdateManyWithWhereNestedInput {
 export interface GameUpdateManyDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
 }
 
 export interface UserUpsertWithoutChoicesInput {
@@ -1725,6 +1738,7 @@ export interface GameCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   players?: Maybe<PlayerCreateManyWithoutGameInput>;
   questions?: Maybe<QuestionCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
@@ -1734,6 +1748,7 @@ export interface GameCreateInput {
 export interface GameUpdateInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
   players?: Maybe<PlayerUpdateManyWithoutGameInput>;
   questions?: Maybe<QuestionUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
@@ -1743,6 +1758,7 @@ export interface GameUpdateInput {
 export interface GameUpdateManyMutationInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
+  finish?: Maybe<Boolean>;
 }
 
 export interface PlayerCreateInput {
@@ -2178,12 +2194,14 @@ export interface Game {
   id: ID_Output;
   title: String;
   open: Boolean;
+  finish: Boolean;
 }
 
 export interface GamePromise extends Promise<Game>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   open: () => Promise<Boolean>;
+  finish: () => Promise<Boolean>;
   players: <T = FragmentableArray<Player>>(args?: {
     where?: PlayerWhereInput;
     orderBy?: PlayerOrderByInput;
@@ -2212,6 +2230,7 @@ export interface GameSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Boolean>>;
+  finish: () => Promise<AsyncIterator<Boolean>>;
   players: <T = Promise<AsyncIterator<PlayerSubscription>>>(args?: {
     where?: PlayerWhereInput;
     orderBy?: PlayerOrderByInput;
@@ -2240,6 +2259,7 @@ export interface GameNullablePromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   open: () => Promise<Boolean>;
+  finish: () => Promise<Boolean>;
   players: <T = FragmentableArray<Player>>(args?: {
     where?: PlayerWhereInput;
     orderBy?: PlayerOrderByInput;
@@ -2803,6 +2823,7 @@ export interface GamePreviousValues {
   id: ID_Output;
   title: String;
   open: Boolean;
+  finish: Boolean;
 }
 
 export interface GamePreviousValuesPromise
@@ -2811,6 +2832,7 @@ export interface GamePreviousValuesPromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   open: () => Promise<Boolean>;
+  finish: () => Promise<Boolean>;
 }
 
 export interface GamePreviousValuesSubscription
@@ -2819,6 +2841,7 @@ export interface GamePreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Boolean>>;
+  finish: () => Promise<AsyncIterator<Boolean>>;
 }
 
 export interface PlayerSubscriptionPayload {

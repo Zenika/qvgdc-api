@@ -38,6 +38,7 @@ type Game {
   id: ID! @id
   title: String!
   open: Boolean! @default(value: false)
+  finish: Boolean! @default(value: false)
   players: [Player!]!
   questions: [Question!]! @relation(name: "GameQuestions")
   currentQuestion: Question @relation(link: INLINE, name: "CurrentGameQuestion")

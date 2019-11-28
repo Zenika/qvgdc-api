@@ -45,6 +45,7 @@ type Game {
   id: ID!
   title: String!
   open: Boolean!
+  finish: Boolean!
   players: [Player!]
   questions: [Question!]!
   currentQuestion: Question
