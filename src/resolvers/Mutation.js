@@ -80,9 +80,44 @@ function newQuestion(parent, args, context, info) {
   return context.prisma.createQuestion({
     title: args.title,
     duration: args.duration,
-    order: args.order,
     game: { connect: { id: args.gameId } },
     user: { connect: { id: userId } }
+  });
+}
+
+async function deleteQuestion(parent, args, context, info) {
+  const userId = getUserId(context);
+
+  const question = await context.prisma.deleteQuestion({
+    id: args.questionId
+  });
+
+  return question;
+}
+
+function updateQuestion(parent, args, context, info) {
+  const userId = getUserId(context);
+  let updateObject = {};
+
+  if (args.data.title !== undefined) {
+    updateObject["title"] = args.data.title;
+  }
+
+  if (args.data.goodChoice !== undefined) {
+    updateObject["goodChoice"] = args.data.goodChoice;
+  }
+
+  if (args.data.launched !== undefined) {
+    updateObject["launched"] = args.data.launched;
+  }
+
+  return context.prisma.updateQuestion({
+    data: {
+      ...updateObject
+    },
+    where: {
+      id: args.questionId
+    }
   });
 }
 
@@ -128,6 +163,8 @@ module.exports = {
   login,
   newGame,
   newQuestion,
+  deleteQuestion,
+  updateQuestion,
   newChoice,
   newPlayer,
   newAnswer,
