@@ -2,7 +2,7 @@ scalar DateTime
 
 type Query {
   games(open: Boolean!): [Game!]!
-  getUser(id: ID!): User!
+  me: User!
 }
 
 type Player {
