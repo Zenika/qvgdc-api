@@ -56,6 +56,10 @@ function updateGame(parent, args, context, info) {
     updateObject["open"] = args.data.open;
   }
 
+  if (args.data.finish !== undefined) {
+    updateObject["finish"] = args.data.finish;
+  }
+
   if (args.data.currentQuestion !== undefined) {
     updateObject["currentQuestion"] = args.data.currentQuestion;
   }
