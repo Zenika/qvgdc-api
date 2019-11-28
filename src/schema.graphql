@@ -3,6 +3,7 @@ scalar DateTime
 type Query {
   game(gameId: ID!): Game!
   games(open: Boolean!): [Game!]!
+  questions(gameId: ID!): [Question!]!
   me: User!
 }
 
@@ -60,6 +61,12 @@ input GameInput {
   currentQuestion: ID
 }
 
+input QuestionInput {
+  title: String
+  goodChoice: Choice
+  launched: DateTime
+}
+
 type AuthPayload {
   token: String
   user: User
@@ -76,12 +83,9 @@ type Mutation {
   newGame(title: String!): Game!
   deleteGame(gameId: ID!): Game!
   updateGame(gameId: ID!, data: GameInput): Game!
-  newQuestion(
-    gameId: ID!
-    title: String!
-    duration: Int!
-    order: Int!
-  ): Question!
+  newQuestion(gameId: ID!, title: String!, duration: Int!): Question!
+  deleteQuestion(questionId: ID!): Question!
+  updateQuestion(questionId: ID!, data: QuestionInput): Question!
   newChoice(questionId: ID!, title: String!): Choice!
   newPlayer(gameId: ID!, name: String!): Player!
   newAnswer(choiceId: ID!, playerId: ID!): Answer!
