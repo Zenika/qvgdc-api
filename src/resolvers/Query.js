@@ -11,17 +11,14 @@ async function games(parent, args, context, info) {
 }
 
 async function getUser(parent, args, context, info) {
-  const where = {
-    id: args.id
-  };
-
   const user = await context.prisma.user({
-    where
+    id: args.id
   });
 
   return user;
 }
 
 module.exports = {
-  games
+  games,
+  getUser
 };

@@ -65,7 +65,7 @@ type AuthPayload {
 type User {
   id: ID!
   email: String!
-  games: [Game!]!
+  games: [Game!]
 }
 
 type Mutation {
