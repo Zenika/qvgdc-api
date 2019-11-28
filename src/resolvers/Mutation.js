@@ -74,15 +74,19 @@ function updateGame(parent, args, context, info) {
   });
 }
 
-function newQuestion(parent, args, context, info) {
+async function newQuestion(parent, args, context, info) {
   const userId = getUserId(context);
+  const questions = await context.prisma.game({ id: args.gameId }).questions();
 
-  return context.prisma.createQuestion({
+  const question = await context.prisma.createQuestion({
     title: args.title,
     duration: args.duration,
+    order: questions.length,
     game: { connect: { id: args.gameId } },
     user: { connect: { id: userId } }
   });
+
+  return question;
 }
 
 async function deleteQuestion(parent, args, context, info) {
