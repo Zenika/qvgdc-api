@@ -1,3 +1,5 @@
+const { getUserId } = require("../utils");
+
 async function games(parent, args, context, info) {
   const where = {
     open: args.open
