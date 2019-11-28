@@ -21,13 +21,19 @@ async function login(parent, args, context, info) {
   };
 }
 
-function newGame(parent, args, context, info) {
+async function newGame(parent, args, context, info) {
   const userId = getUserId(context);
 
-  return context.prisma.createGame({
+  console.log(userId);
+
+  const game = await context.prisma.createGame({
     title: args.title,
-    user: { connect: { id: userId } }
+    user: {
+      connect: { id: userId }
+    }
   });
+
+  return game;
 }
 
 function updateGame(parent, args, context, info) {
