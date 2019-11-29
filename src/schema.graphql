@@ -5,7 +5,7 @@ type Query {
   games(open: Boolean!): [Game!]!
   question(questionId: ID!): Question!
   questions(gameId: ID!): [Question!]!
-  choices(questionId: ID!): [Choices!]!
+  choices(questionId: ID!): [Choice!]!
   me: User!
 }
 
