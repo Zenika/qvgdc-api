@@ -3,7 +3,7 @@ scalar DateTime
 type Query {
   game(gameId: ID!): Game!
   games(open: Boolean!): [Game!]!
-  question(questionId: ID!): [Question!]!
+  question(questionId: ID!): Question!
   questions(gameId: ID!): [Question!]!
   choices(questionId: ID!): [Question!]!
   me: User!
