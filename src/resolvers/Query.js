@@ -20,6 +20,16 @@ async function questions(parent, args, context, info) {
   return questions;
 }
 
+async function choices(parent, args, context, info) {
+  const userId = getUserId(context);
+
+  const choices = await context.prisma
+    .question({ id: args.questionId })
+    .choices();
+
+  return choices;
+}
+
 async function game(parent, args, context, info) {
   const userId = getUserId(context);
 
