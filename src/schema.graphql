@@ -4,6 +4,7 @@ type Query {
   game(gameId: ID!): Game!
   games(open: Boolean!): [Game!]!
   questions(gameId: ID!): [Question!]!
+  choices(questionId: ID!): [Question!]!
   me: User!
 }
 
@@ -64,6 +65,15 @@ input GameInput {
 input QuestionInput {
   title: String
   launched: DateTime
+  goodChoiceId: ID
+}
+
+input QuestionChoiceInput {
+  id: ID
+}
+
+input ChoiceInput {
+  title: String
 }
 
 type AuthPayload {
@@ -86,6 +96,8 @@ type Mutation {
   deleteQuestion(questionId: ID!): Question!
   updateQuestion(questionId: ID!, data: QuestionInput): Question!
   newChoice(questionId: ID!, title: String!): Choice!
+  deleteChoice(choiceId: ID!): Choice!
+  updateChoice(choiceId: ID!, data: ChoiceInput): Choice!
   newPlayer(gameId: ID!, name: String!): Player!
   newAnswer(choiceId: ID!, playerId: ID!): Answer!
 }

@@ -107,8 +107,8 @@ function updateQuestion(parent, args, context, info) {
     updateObject["title"] = args.data.title;
   }
 
-  if (args.data.goodChoice !== undefined) {
-    updateObject["goodChoice"] = args.data.goodChoice;
+  if (args.data.goodChoiceId !== undefined) {
+    updateObject["goodChoice"] = { connect: { id: args.data.goodChoiceId } };
   }
 
   if (args.data.launched !== undefined) {
@@ -132,6 +132,35 @@ function newChoice(parent, args, context, info) {
     title: args.title,
     question: { connect: { id: args.questionId } },
     user: { connect: { id: userId } }
+  });
+}
+
+async function deleteChoice(parent, args, context, info) {
+  const userId = getUserId(context);
+
+  const choice = await context.prisma.deleteChoice({
+    id: args.choiceId
+  });
+
+  return choice;
+}
+
+function updateChoice(parent, args, context, info) {
+  const userId = getUserId(context);
+
+  let updateObject = {};
+
+  if (args.data.title !== undefined) {
+    updateObject["title"] = args.data.title;
+  }
+
+  return context.prisma.updateChoice({
+    data: {
+      ...updateObject
+    },
+    where: {
+      id: args.choiceId
+    }
   });
 }
 
@@ -170,6 +199,8 @@ module.exports = {
   deleteQuestion,
   updateQuestion,
   newChoice,
+  deleteChoice,
+  updateChoice,
   newPlayer,
   newAnswer,
   updateGame,
