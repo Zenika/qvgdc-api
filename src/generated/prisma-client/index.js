@@ -32,6 +32,6 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/contact-738d10/qvgdc-api/dev`
+  endpoint: `https://app-097320b7-f47c-4ebf-a1e8-bbb6f0547850.cleverapps.io/`
 });
 exports.prisma = new exports.Prisma();
