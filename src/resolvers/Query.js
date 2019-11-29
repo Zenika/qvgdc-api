@@ -65,5 +65,6 @@ module.exports = {
   game,
   me,
   questions,
-  question
+  question,
+  choices
 };
