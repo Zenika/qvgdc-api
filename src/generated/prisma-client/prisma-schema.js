@@ -535,6 +535,7 @@ type Game {
   title: String!
   open: Boolean!
   finish: Boolean!
+  state: Int
   players(where: PlayerWhereInput, orderBy: PlayerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Player!]
   questions(where: QuestionWhereInput, orderBy: QuestionOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Question!]
   currentQuestion: Question
@@ -552,6 +553,7 @@ input GameCreateInput {
   title: String!
   open: Boolean
   finish: Boolean
+  state: Int
   players: PlayerCreateManyWithoutGameInput
   questions: QuestionCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
@@ -578,6 +580,7 @@ input GameCreateWithoutPlayersInput {
   title: String!
   open: Boolean
   finish: Boolean
+  state: Int
   questions: QuestionCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
   user: UserCreateOneWithoutGamesInput!
@@ -588,6 +591,7 @@ input GameCreateWithoutQuestionsInput {
   title: String!
   open: Boolean
   finish: Boolean
+  state: Int
   players: PlayerCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
   user: UserCreateOneWithoutGamesInput!
@@ -598,6 +602,7 @@ input GameCreateWithoutUserInput {
   title: String!
   open: Boolean
   finish: Boolean
+  state: Int
   players: PlayerCreateManyWithoutGameInput
   questions: QuestionCreateManyWithoutGameInput
   currentQuestion: QuestionCreateOneInput
@@ -617,6 +622,8 @@ enum GameOrderByInput {
   open_DESC
   finish_ASC
   finish_DESC
+  state_ASC
+  state_DESC
 }
 
 type GamePreviousValues {
@@ -624,6 +631,7 @@ type GamePreviousValues {
   title: String!
   open: Boolean!
   finish: Boolean!
+  state: Int
 }
 
 input GameScalarWhereInput {
@@ -659,6 +667,14 @@ input GameScalarWhereInput {
   open_not: Boolean
   finish: Boolean
   finish_not: Boolean
+  state: Int
+  state_not: Int
+  state_in: [Int!]
+  state_not_in: [Int!]
+  state_lt: Int
+  state_lte: Int
+  state_gt: Int
+  state_gte: Int
   AND: [GameScalarWhereInput!]
   OR: [GameScalarWhereInput!]
   NOT: [GameScalarWhereInput!]
@@ -686,6 +702,7 @@ input GameUpdateInput {
   title: String
   open: Boolean
   finish: Boolean
+  state: Int
   players: PlayerUpdateManyWithoutGameInput
   questions: QuestionUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
@@ -696,12 +713,14 @@ input GameUpdateManyDataInput {
   title: String
   open: Boolean
   finish: Boolean
+  state: Int
 }
 
 input GameUpdateManyMutationInput {
   title: String
   open: Boolean
   finish: Boolean
+  state: Int
 }
 
 input GameUpdateManyWithoutUserInput {
@@ -739,6 +758,7 @@ input GameUpdateWithoutPlayersDataInput {
   title: String
   open: Boolean
   finish: Boolean
+  state: Int
   questions: QuestionUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
   user: UserUpdateOneRequiredWithoutGamesInput
@@ -748,6 +768,7 @@ input GameUpdateWithoutQuestionsDataInput {
   title: String
   open: Boolean
   finish: Boolean
+  state: Int
   players: PlayerUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
   user: UserUpdateOneRequiredWithoutGamesInput
@@ -757,6 +778,7 @@ input GameUpdateWithoutUserDataInput {
   title: String
   open: Boolean
   finish: Boolean
+  state: Int
   players: PlayerUpdateManyWithoutGameInput
   questions: QuestionUpdateManyWithoutGameInput
   currentQuestion: QuestionUpdateOneInput
@@ -816,6 +838,14 @@ input GameWhereInput {
   open_not: Boolean
   finish: Boolean
   finish_not: Boolean
+  state: Int
+  state_not: Int
+  state_in: [Int!]
+  state_not_in: [Int!]
+  state_lt: Int
+  state_lte: Int
+  state_gt: Int
+  state_gte: Int
   players_every: PlayerWhereInput
   players_some: PlayerWhereInput
   players_none: PlayerWhereInput
