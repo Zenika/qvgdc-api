@@ -62,10 +62,7 @@ function updateGame(parent, args, context, info) {
 
   if (args.data.currentQuestion !== undefined) {
     updateObject["currentQuestion"] = {
-      connect: { id: args.data.currentQuestion },
-      update: {
-        launched: new Date().toISOString()
-      }
+      connect: { id: args.data.currentQuestion }
     };
   }
 
