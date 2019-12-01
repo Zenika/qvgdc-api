@@ -61,7 +61,12 @@ function updateGame(parent, args, context, info) {
   }
 
   if (args.data.currentQuestion !== undefined) {
-    updateObject["currentQuestion"] = args.data.currentQuestion;
+    updateObject["currentQuestion"] = {
+      connect: { id: args.data.currentQuestion },
+      update: {
+        launched: new Date().toISOString()
+      }
+    };
   }
 
   return context.prisma.updateGame({
