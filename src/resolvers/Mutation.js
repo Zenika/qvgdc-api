@@ -63,13 +63,10 @@ function updateGame(parent, args, context, info) {
   if (args.data.currentQuestion !== undefined) {
     updateObject["currentQuestion"] = {
       connect: { id: args.data.currentQuestion },
-      update: {
-        launched: new Date().toISOString()
-      }
     };
   }
 
-  return context.prisma.updateGame({
+  const game = await context.prisma.updateGame({
     data: {
       ...updateObject
     },
@@ -77,6 +74,19 @@ function updateGame(parent, args, context, info) {
       id: args.gameId
     }
   });
+
+  if (args.data.currentQuestion !== undefined) {
+    const question = await context.prisma.updateQuestion({
+      data: {
+        launched: new Date().toISOString()
+      },
+      where: {
+        id: args.data.currentQuestion
+      }
+    });
+  }
+
+  return game;
 }
 
 async function newQuestion(parent, args, context, info) {
