@@ -308,7 +308,9 @@ export type GameOrderByInput =
   | "open_ASC"
   | "open_DESC"
   | "finish_ASC"
-  | "finish_DESC";
+  | "finish_DESC"
+  | "state_ASC"
+  | "state_DESC";
 
 export type PlayerOrderByInput =
   | "id_ASC"
@@ -561,6 +563,14 @@ export interface GameWhereInput {
   open_not?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
   finish_not?: Maybe<Boolean>;
+  state?: Maybe<Int>;
+  state_not?: Maybe<Int>;
+  state_in?: Maybe<Int[] | Int>;
+  state_not_in?: Maybe<Int[] | Int>;
+  state_lt?: Maybe<Int>;
+  state_lte?: Maybe<Int>;
+  state_gt?: Maybe<Int>;
+  state_gte?: Maybe<Int>;
   players_every?: Maybe<PlayerWhereInput>;
   players_some?: Maybe<PlayerWhereInput>;
   players_none?: Maybe<PlayerWhereInput>;
@@ -735,6 +745,7 @@ export interface GameCreateWithoutPlayersInput {
   title: String;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   questions?: Maybe<QuestionCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
   user: UserCreateOneWithoutGamesInput;
@@ -796,6 +807,7 @@ export interface GameCreateWithoutUserInput {
   title: String;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   players?: Maybe<PlayerCreateManyWithoutGameInput>;
   questions?: Maybe<QuestionCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
@@ -884,6 +896,7 @@ export interface GameCreateWithoutQuestionsInput {
   title: String;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   players?: Maybe<PlayerCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
   user: UserCreateOneWithoutGamesInput;
@@ -1026,6 +1039,7 @@ export interface GameUpdateWithoutPlayersDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   questions?: Maybe<QuestionUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
   user?: Maybe<UserUpdateOneRequiredWithoutGamesInput>;
@@ -1147,6 +1161,7 @@ export interface GameUpdateWithoutUserDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   players?: Maybe<PlayerUpdateManyWithoutGameInput>;
   questions?: Maybe<QuestionUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
@@ -1471,6 +1486,7 @@ export interface GameUpdateWithoutQuestionsDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   players?: Maybe<PlayerUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
   user?: Maybe<UserUpdateOneRequiredWithoutGamesInput>;
@@ -1659,6 +1675,14 @@ export interface GameScalarWhereInput {
   open_not?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
   finish_not?: Maybe<Boolean>;
+  state?: Maybe<Int>;
+  state_not?: Maybe<Int>;
+  state_in?: Maybe<Int[] | Int>;
+  state_not_in?: Maybe<Int[] | Int>;
+  state_lt?: Maybe<Int>;
+  state_lte?: Maybe<Int>;
+  state_gt?: Maybe<Int>;
+  state_gte?: Maybe<Int>;
   AND?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
   OR?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
   NOT?: Maybe<GameScalarWhereInput[] | GameScalarWhereInput>;
@@ -1673,6 +1697,7 @@ export interface GameUpdateManyDataInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
 }
 
 export interface UserUpsertWithoutChoicesInput {
@@ -1739,6 +1764,7 @@ export interface GameCreateInput {
   title: String;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   players?: Maybe<PlayerCreateManyWithoutGameInput>;
   questions?: Maybe<QuestionCreateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionCreateOneInput>;
@@ -1749,6 +1775,7 @@ export interface GameUpdateInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   players?: Maybe<PlayerUpdateManyWithoutGameInput>;
   questions?: Maybe<QuestionUpdateManyWithoutGameInput>;
   currentQuestion?: Maybe<QuestionUpdateOneInput>;
@@ -1759,6 +1786,7 @@ export interface GameUpdateManyMutationInput {
   title?: Maybe<String>;
   open?: Maybe<Boolean>;
   finish?: Maybe<Boolean>;
+  state?: Maybe<Int>;
 }
 
 export interface PlayerCreateInput {
@@ -2195,6 +2223,7 @@ export interface Game {
   title: String;
   open: Boolean;
   finish: Boolean;
+  state?: Int;
 }
 
 export interface GamePromise extends Promise<Game>, Fragmentable {
@@ -2202,6 +2231,7 @@ export interface GamePromise extends Promise<Game>, Fragmentable {
   title: () => Promise<String>;
   open: () => Promise<Boolean>;
   finish: () => Promise<Boolean>;
+  state: () => Promise<Int>;
   players: <T = FragmentableArray<Player>>(args?: {
     where?: PlayerWhereInput;
     orderBy?: PlayerOrderByInput;
@@ -2231,6 +2261,7 @@ export interface GameSubscription
   title: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Boolean>>;
   finish: () => Promise<AsyncIterator<Boolean>>;
+  state: () => Promise<AsyncIterator<Int>>;
   players: <T = Promise<AsyncIterator<PlayerSubscription>>>(args?: {
     where?: PlayerWhereInput;
     orderBy?: PlayerOrderByInput;
@@ -2260,6 +2291,7 @@ export interface GameNullablePromise
   title: () => Promise<String>;
   open: () => Promise<Boolean>;
   finish: () => Promise<Boolean>;
+  state: () => Promise<Int>;
   players: <T = FragmentableArray<Player>>(args?: {
     where?: PlayerWhereInput;
     orderBy?: PlayerOrderByInput;
@@ -2824,6 +2856,7 @@ export interface GamePreviousValues {
   title: String;
   open: Boolean;
   finish: Boolean;
+  state?: Int;
 }
 
 export interface GamePreviousValuesPromise
@@ -2833,6 +2866,7 @@ export interface GamePreviousValuesPromise
   title: () => Promise<String>;
   open: () => Promise<Boolean>;
   finish: () => Promise<Boolean>;
+  state: () => Promise<Int>;
 }
 
 export interface GamePreviousValuesSubscription
@@ -2842,6 +2876,7 @@ export interface GamePreviousValuesSubscription
   title: () => Promise<AsyncIterator<String>>;
   open: () => Promise<AsyncIterator<Boolean>>;
   finish: () => Promise<AsyncIterator<Boolean>>;
+  state: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface PlayerSubscriptionPayload {

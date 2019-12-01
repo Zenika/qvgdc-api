@@ -50,6 +50,7 @@ type Game {
   title: String!
   open: Boolean!
   finish: Boolean!
+  state: Int
   players: [Player!]
   questions: [Question!]!
   currentQuestion: Question
@@ -60,6 +61,7 @@ input GameInput {
   title: String
   open: Boolean
   finish: Boolean
+  state: Int
   currentQuestion: ID
 }
 
