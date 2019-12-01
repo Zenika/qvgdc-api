@@ -6,6 +6,8 @@ endpoint: https://app-097320b7-f47c-4ebf-a1e8-bbb6f0547850.cleverapps.io/
 # Points to the file that contains your datamodel
 datamodel: datamodel.prisma
 
+secret: ${env:API_SECRET}
+
 # Specifies language & location for the generated Prisma client
 generate:
   - generator: javascript-client
