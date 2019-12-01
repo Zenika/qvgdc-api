@@ -44,7 +44,7 @@ async function deleteGame(parent, args, context, info) {
   return game;
 }
 
-function updateGame(parent, args, context, info) {
+async function updateGame(parent, args, context, info) {
   const userId = getUserId(context);
   let updateObject = {};
 
@@ -62,7 +62,7 @@ function updateGame(parent, args, context, info) {
 
   if (args.data.currentQuestion !== undefined) {
     updateObject["currentQuestion"] = {
-      connect: { id: args.data.currentQuestion },
+      connect: { id: args.data.currentQuestion }
     };
   }
 
