@@ -64,9 +64,18 @@ async function updateGame(parent, args, context, info) {
     updateObject["finish"] = args.data.finish;
   }
 
-  if (args.data.currentQuestion !== undefined) {
+  if (
+    args.data.currentQuestion !== undefined &&
+    args.data.currentQuestion !== null
+  ) {
     updateObject["currentQuestion"] = {
       connect: { id: args.data.currentQuestion }
+    };
+  }
+
+  if (args.data.currentQuestion === null) {
+    updateObject["currentQuestion"] = {
+      disconnect: true
     };
   }
 
@@ -79,7 +88,10 @@ async function updateGame(parent, args, context, info) {
     }
   });
 
-  if (args.data.currentQuestion !== undefined) {
+  if (
+    args.data.currentQuestion !== undefined &&
+    args.data.currentQuestion !== null
+  ) {
     const question = await context.prisma.updateQuestion({
       data: {
         launched: new Date().toISOString()
