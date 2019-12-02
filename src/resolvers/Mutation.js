@@ -203,7 +203,8 @@ async function newPlayer(parent, args, context, info) {
 function newAnswer(parent, args, context, info) {
   return context.prisma.createAnswer({
     choice: { connect: { id: args.choiceId } },
-    player: { connect: { id: args.playerId } }
+    player: { connect: { id: args.playerId } },
+    question: { connect: { id: args.questionId } }
   });
 }
 
