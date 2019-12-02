@@ -200,12 +200,66 @@ async function newPlayer(parent, args, context, info) {
   });
 }
 
-function newAnswer(parent, args, context, info) {
-  return context.prisma.createAnswer({
+async function newAnswer(parent, args, context, info) {
+  const answer = await context.prisma.createAnswer({
     choice: { connect: { id: args.choiceId } },
     player: { connect: { id: args.playerId } },
     question: { connect: { id: args.questionId } }
   });
+
+  const [player, oldAnswers, goodChoice] = await Promise.all([
+    context.prisma.player({ id: args.playerId }),
+    context.prisma.player({ id: args.playerId }).answers(),
+    context.prisma.question({ id: args.questionId }).goodChoice()
+  ]);
+
+  const responseTimes = [];
+
+  for (let i = 0; i < oldAnswers.length; i++) {
+    const val = oldAnswers[i];
+
+    const [
+      associatedQuestion,
+      associatedChoice,
+      associatedGoodChoice
+    ] = await Promise.all([
+      context.prisma.answer({ id: val.id }).question(),
+      context.prisma.answer({ id: val.id }).choice(),
+      context.prisma
+        .answer({ id: val.id })
+        .question()
+        .goodChoice()
+    ]);
+
+    if (associatedChoice.id !== associatedGoodChoice.id) continue;
+
+    const launchedTime = new Date(associatedQuestion.launched).getTime();
+    const answered = new Date(val.createdAt).getTime();
+    const responseTime = answered - launchedTime;
+
+    responseTimes.push(responseTime);
+  }
+
+  const totalResponseTime = responseTimes.reduce((a, b) => a + b, 0);
+  const responseTimeFinal = totalResponseTime / responseTimes.length;
+  const updatingPlayer = {
+    score:
+      goodChoice.id === args.choiceId
+        ? !player.score
+          ? 1
+          : player.score + 1
+        : player.score,
+    responseTime: responseTimeFinal
+  };
+
+  const playerupdate = await context.prisma.updatePlayer({
+    data: { ...updatingPlayer },
+    where: {
+      id: args.playerId
+    }
+  });
+
+  return answer;
 }
 
 module.exports = {
