@@ -7,12 +7,8 @@ async function players(parent, args, context, info) {
 }
 
 async function player(parent, args, context, info) {
-  const where = {
-    id: args.playerId
-  };
-
   const player = await context.prisma.player({
-    where
+    id: args.playerId
   });
 
   return player;
