@@ -185,7 +185,7 @@ async function newPlayer(parent, args, context, info) {
     name: args.name
   });
 
-  const notOpenGameId = await context.primsa.$exists.game({
+  const notOpenGameId = await context.prisma.$exists.game({
     id: args.gameId,
     open: false
   });
