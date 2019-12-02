@@ -56,6 +56,10 @@ async function updateGame(parent, args, context, info) {
     updateObject["open"] = args.data.open;
   }
 
+  if (args.data.state !== undefined) {
+    updateObject["state"] = args.data.state;
+  }
+
   if (args.data.finish !== undefined) {
     updateObject["finish"] = args.data.finish;
   }
