@@ -298,7 +298,11 @@ export type ChoiceOrderByInput =
   | "title_ASC"
   | "title_DESC";
 
-export type AnswerOrderByInput = "id_ASC" | "id_DESC";
+export type AnswerOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC";
 
 export type GameOrderByInput =
   | "id_ASC"
@@ -471,6 +475,15 @@ export interface AnswerWhereInput {
   id_not_ends_with?: Maybe<ID_Input>;
   choice?: Maybe<ChoiceWhereInput>;
   player?: Maybe<PlayerWhereInput>;
+  question?: Maybe<QuestionWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
   AND?: Maybe<AnswerWhereInput[] | AnswerWhereInput>;
   OR?: Maybe<AnswerWhereInput[] | AnswerWhereInput>;
   NOT?: Maybe<AnswerWhereInput[] | AnswerWhereInput>;
@@ -666,6 +679,7 @@ export interface AnswerCreateInput {
   id?: Maybe<ID_Input>;
   choice: ChoiceCreateOneWithoutAnswersInput;
   player: PlayerCreateOneWithoutAnswersInput;
+  question: QuestionCreateOneWithoutAnswersInput;
 }
 
 export interface ChoiceCreateOneWithoutAnswersInput {
@@ -690,7 +704,7 @@ export interface QuestionCreateWithoutChoicesInput {
   duration: Int;
   title: String;
   goodChoice?: Maybe<ChoiceCreateOneInput>;
-  answers?: Maybe<AnswerCreateManyInput>;
+  answers?: Maybe<AnswerCreateManyWithoutQuestionInput>;
   order: Int;
   user: UserCreateOneWithoutQuestionsInput;
   game: GameCreateOneWithoutQuestionsInput;
@@ -720,6 +734,7 @@ export interface AnswerCreateManyWithoutChoiceInput {
 export interface AnswerCreateWithoutChoiceInput {
   id?: Maybe<ID_Input>;
   player: PlayerCreateOneWithoutAnswersInput;
+  question: QuestionCreateOneWithoutAnswersInput;
 }
 
 export interface PlayerCreateOneWithoutAnswersInput {
@@ -764,7 +779,7 @@ export interface QuestionCreateWithoutGameInput {
   title: String;
   choices?: Maybe<ChoiceCreateManyWithoutQuestionInput>;
   goodChoice?: Maybe<ChoiceCreateOneInput>;
-  answers?: Maybe<AnswerCreateManyInput>;
+  answers?: Maybe<AnswerCreateManyWithoutQuestionInput>;
   order: Int;
   user: UserCreateOneWithoutQuestionsInput;
   launched?: Maybe<DateTimeInput>;
@@ -836,29 +851,24 @@ export interface AnswerCreateManyWithoutPlayerInput {
 export interface AnswerCreateWithoutPlayerInput {
   id?: Maybe<ID_Input>;
   choice: ChoiceCreateOneWithoutAnswersInput;
+  question: QuestionCreateOneWithoutAnswersInput;
 }
 
-export interface QuestionCreateOneInput {
-  create?: Maybe<QuestionCreateInput>;
+export interface QuestionCreateOneWithoutAnswersInput {
+  create?: Maybe<QuestionCreateWithoutAnswersInput>;
   connect?: Maybe<QuestionWhereUniqueInput>;
 }
 
-export interface QuestionCreateInput {
+export interface QuestionCreateWithoutAnswersInput {
   id?: Maybe<ID_Input>;
   duration: Int;
   title: String;
   choices?: Maybe<ChoiceCreateManyWithoutQuestionInput>;
   goodChoice?: Maybe<ChoiceCreateOneInput>;
-  answers?: Maybe<AnswerCreateManyInput>;
   order: Int;
   user: UserCreateOneWithoutQuestionsInput;
   game: GameCreateOneWithoutQuestionsInput;
   launched?: Maybe<DateTimeInput>;
-}
-
-export interface AnswerCreateManyInput {
-  create?: Maybe<AnswerCreateInput[] | AnswerCreateInput>;
-  connect?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
 }
 
 export interface UserCreateOneWithoutQuestionsInput {
@@ -902,6 +912,37 @@ export interface GameCreateWithoutQuestionsInput {
   user: UserCreateOneWithoutGamesInput;
 }
 
+export interface QuestionCreateOneInput {
+  create?: Maybe<QuestionCreateInput>;
+  connect?: Maybe<QuestionWhereUniqueInput>;
+}
+
+export interface QuestionCreateInput {
+  id?: Maybe<ID_Input>;
+  duration: Int;
+  title: String;
+  choices?: Maybe<ChoiceCreateManyWithoutQuestionInput>;
+  goodChoice?: Maybe<ChoiceCreateOneInput>;
+  answers?: Maybe<AnswerCreateManyWithoutQuestionInput>;
+  order: Int;
+  user: UserCreateOneWithoutQuestionsInput;
+  game: GameCreateOneWithoutQuestionsInput;
+  launched?: Maybe<DateTimeInput>;
+}
+
+export interface AnswerCreateManyWithoutQuestionInput {
+  create?: Maybe<
+    AnswerCreateWithoutQuestionInput[] | AnswerCreateWithoutQuestionInput
+  >;
+  connect?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
+}
+
+export interface AnswerCreateWithoutQuestionInput {
+  id?: Maybe<ID_Input>;
+  choice: ChoiceCreateOneWithoutAnswersInput;
+  player: PlayerCreateOneWithoutAnswersInput;
+}
+
 export interface UserCreateOneWithoutGamesInput {
   create?: Maybe<UserCreateWithoutGamesInput>;
   connect?: Maybe<UserWhereUniqueInput>;
@@ -928,7 +969,7 @@ export interface QuestionCreateWithoutUserInput {
   title: String;
   choices?: Maybe<ChoiceCreateManyWithoutQuestionInput>;
   goodChoice?: Maybe<ChoiceCreateOneInput>;
-  answers?: Maybe<AnswerCreateManyInput>;
+  answers?: Maybe<AnswerCreateManyWithoutQuestionInput>;
   order: Int;
   game: GameCreateOneWithoutQuestionsInput;
   launched?: Maybe<DateTimeInput>;
@@ -937,6 +978,7 @@ export interface QuestionCreateWithoutUserInput {
 export interface AnswerUpdateInput {
   choice?: Maybe<ChoiceUpdateOneRequiredWithoutAnswersInput>;
   player?: Maybe<PlayerUpdateOneRequiredWithoutAnswersInput>;
+  question?: Maybe<QuestionUpdateOneRequiredWithoutAnswersInput>;
 }
 
 export interface ChoiceUpdateOneRequiredWithoutAnswersInput {
@@ -963,7 +1005,7 @@ export interface QuestionUpdateWithoutChoicesDataInput {
   duration?: Maybe<Int>;
   title?: Maybe<String>;
   goodChoice?: Maybe<ChoiceUpdateOneInput>;
-  answers?: Maybe<AnswerUpdateManyInput>;
+  answers?: Maybe<AnswerUpdateManyWithoutQuestionInput>;
   order?: Maybe<Int>;
   user?: Maybe<UserUpdateOneRequiredWithoutQuestionsInput>;
   game?: Maybe<GameUpdateOneRequiredWithoutQuestionsInput>;
@@ -1012,6 +1054,7 @@ export interface AnswerUpdateWithWhereUniqueWithoutChoiceInput {
 
 export interface AnswerUpdateWithoutChoiceDataInput {
   player?: Maybe<PlayerUpdateOneRequiredWithoutAnswersInput>;
+  question?: Maybe<QuestionUpdateOneRequiredWithoutAnswersInput>;
 }
 
 export interface PlayerUpdateOneRequiredWithoutAnswersInput {
@@ -1078,7 +1121,7 @@ export interface QuestionUpdateWithoutGameDataInput {
   title?: Maybe<String>;
   choices?: Maybe<ChoiceUpdateManyWithoutQuestionInput>;
   goodChoice?: Maybe<ChoiceUpdateOneInput>;
-  answers?: Maybe<AnswerUpdateManyInput>;
+  answers?: Maybe<AnswerUpdateManyWithoutQuestionInput>;
   order?: Maybe<Int>;
   user?: Maybe<UserUpdateOneRequiredWithoutQuestionsInput>;
   launched?: Maybe<DateTimeInput>;
@@ -1226,153 +1269,25 @@ export interface AnswerUpdateWithWhereUniqueWithoutPlayerInput {
 
 export interface AnswerUpdateWithoutPlayerDataInput {
   choice?: Maybe<ChoiceUpdateOneRequiredWithoutAnswersInput>;
+  question?: Maybe<QuestionUpdateOneRequiredWithoutAnswersInput>;
 }
 
-export interface AnswerUpsertWithWhereUniqueWithoutPlayerInput {
-  where: AnswerWhereUniqueInput;
-  update: AnswerUpdateWithoutPlayerDataInput;
-  create: AnswerCreateWithoutPlayerInput;
-}
-
-export interface AnswerScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  AND?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
-  OR?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
-  NOT?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
-}
-
-export interface PlayerUpsertWithWhereUniqueWithoutGameInput {
-  where: PlayerWhereUniqueInput;
-  update: PlayerUpdateWithoutGameDataInput;
-  create: PlayerCreateWithoutGameInput;
-}
-
-export interface PlayerScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  score?: Maybe<Int>;
-  score_not?: Maybe<Int>;
-  score_in?: Maybe<Int[] | Int>;
-  score_not_in?: Maybe<Int[] | Int>;
-  score_lt?: Maybe<Int>;
-  score_lte?: Maybe<Int>;
-  score_gt?: Maybe<Int>;
-  score_gte?: Maybe<Int>;
-  responseTime?: Maybe<Int>;
-  responseTime_not?: Maybe<Int>;
-  responseTime_in?: Maybe<Int[] | Int>;
-  responseTime_not_in?: Maybe<Int[] | Int>;
-  responseTime_lt?: Maybe<Int>;
-  responseTime_lte?: Maybe<Int>;
-  responseTime_gt?: Maybe<Int>;
-  responseTime_gte?: Maybe<Int>;
-  AND?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
-  OR?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
-  NOT?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
-}
-
-export interface PlayerUpdateManyWithWhereNestedInput {
-  where: PlayerScalarWhereInput;
-  data: PlayerUpdateManyDataInput;
-}
-
-export interface PlayerUpdateManyDataInput {
-  name?: Maybe<String>;
-  score?: Maybe<Int>;
-  responseTime?: Maybe<Int>;
-}
-
-export interface QuestionUpdateOneInput {
-  create?: Maybe<QuestionCreateInput>;
-  update?: Maybe<QuestionUpdateDataInput>;
-  upsert?: Maybe<QuestionUpsertNestedInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
+export interface QuestionUpdateOneRequiredWithoutAnswersInput {
+  create?: Maybe<QuestionCreateWithoutAnswersInput>;
+  update?: Maybe<QuestionUpdateWithoutAnswersDataInput>;
+  upsert?: Maybe<QuestionUpsertWithoutAnswersInput>;
   connect?: Maybe<QuestionWhereUniqueInput>;
 }
 
-export interface QuestionUpdateDataInput {
+export interface QuestionUpdateWithoutAnswersDataInput {
   duration?: Maybe<Int>;
   title?: Maybe<String>;
   choices?: Maybe<ChoiceUpdateManyWithoutQuestionInput>;
   goodChoice?: Maybe<ChoiceUpdateOneInput>;
-  answers?: Maybe<AnswerUpdateManyInput>;
   order?: Maybe<Int>;
   user?: Maybe<UserUpdateOneRequiredWithoutQuestionsInput>;
   game?: Maybe<GameUpdateOneRequiredWithoutQuestionsInput>;
   launched?: Maybe<DateTimeInput>;
-}
-
-export interface AnswerUpdateManyInput {
-  create?: Maybe<AnswerCreateInput[] | AnswerCreateInput>;
-  update?: Maybe<
-    | AnswerUpdateWithWhereUniqueNestedInput[]
-    | AnswerUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | AnswerUpsertWithWhereUniqueNestedInput[]
-    | AnswerUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
-  connect?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
-  set?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
-  disconnect?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
-  deleteMany?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
-}
-
-export interface AnswerUpdateWithWhereUniqueNestedInput {
-  where: AnswerWhereUniqueInput;
-  data: AnswerUpdateDataInput;
-}
-
-export interface AnswerUpdateDataInput {
-  choice?: Maybe<ChoiceUpdateOneRequiredWithoutAnswersInput>;
-  player?: Maybe<PlayerUpdateOneRequiredWithoutAnswersInput>;
-}
-
-export interface AnswerUpsertWithWhereUniqueNestedInput {
-  where: AnswerWhereUniqueInput;
-  update: AnswerUpdateDataInput;
-  create: AnswerCreateInput;
 }
 
 export interface UserUpdateOneRequiredWithoutQuestionsInput {
@@ -1492,6 +1407,95 @@ export interface GameUpdateWithoutQuestionsDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutGamesInput>;
 }
 
+export interface QuestionUpdateOneInput {
+  create?: Maybe<QuestionCreateInput>;
+  update?: Maybe<QuestionUpdateDataInput>;
+  upsert?: Maybe<QuestionUpsertNestedInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<QuestionWhereUniqueInput>;
+}
+
+export interface QuestionUpdateDataInput {
+  duration?: Maybe<Int>;
+  title?: Maybe<String>;
+  choices?: Maybe<ChoiceUpdateManyWithoutQuestionInput>;
+  goodChoice?: Maybe<ChoiceUpdateOneInput>;
+  answers?: Maybe<AnswerUpdateManyWithoutQuestionInput>;
+  order?: Maybe<Int>;
+  user?: Maybe<UserUpdateOneRequiredWithoutQuestionsInput>;
+  game?: Maybe<GameUpdateOneRequiredWithoutQuestionsInput>;
+  launched?: Maybe<DateTimeInput>;
+}
+
+export interface AnswerUpdateManyWithoutQuestionInput {
+  create?: Maybe<
+    AnswerCreateWithoutQuestionInput[] | AnswerCreateWithoutQuestionInput
+  >;
+  delete?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
+  connect?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
+  set?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
+  disconnect?: Maybe<AnswerWhereUniqueInput[] | AnswerWhereUniqueInput>;
+  update?: Maybe<
+    | AnswerUpdateWithWhereUniqueWithoutQuestionInput[]
+    | AnswerUpdateWithWhereUniqueWithoutQuestionInput
+  >;
+  upsert?: Maybe<
+    | AnswerUpsertWithWhereUniqueWithoutQuestionInput[]
+    | AnswerUpsertWithWhereUniqueWithoutQuestionInput
+  >;
+  deleteMany?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
+}
+
+export interface AnswerUpdateWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput;
+  data: AnswerUpdateWithoutQuestionDataInput;
+}
+
+export interface AnswerUpdateWithoutQuestionDataInput {
+  choice?: Maybe<ChoiceUpdateOneRequiredWithoutAnswersInput>;
+  player?: Maybe<PlayerUpdateOneRequiredWithoutAnswersInput>;
+}
+
+export interface AnswerUpsertWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput;
+  update: AnswerUpdateWithoutQuestionDataInput;
+  create: AnswerCreateWithoutQuestionInput;
+}
+
+export interface AnswerScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
+  OR?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
+  NOT?: Maybe<AnswerScalarWhereInput[] | AnswerScalarWhereInput>;
+}
+
+export interface QuestionUpsertNestedInput {
+  update: QuestionUpdateDataInput;
+  create: QuestionCreateInput;
+}
+
 export interface UserUpdateOneRequiredWithoutGamesInput {
   create?: Maybe<UserCreateWithoutGamesInput>;
   update?: Maybe<UserUpdateWithoutGamesDataInput>;
@@ -1539,7 +1543,7 @@ export interface QuestionUpdateWithoutUserDataInput {
   title?: Maybe<String>;
   choices?: Maybe<ChoiceUpdateManyWithoutQuestionInput>;
   goodChoice?: Maybe<ChoiceUpdateOneInput>;
-  answers?: Maybe<AnswerUpdateManyInput>;
+  answers?: Maybe<AnswerUpdateManyWithoutQuestionInput>;
   order?: Maybe<Int>;
   game?: Maybe<GameUpdateOneRequiredWithoutQuestionsInput>;
   launched?: Maybe<DateTimeInput>;
@@ -1631,9 +1635,82 @@ export interface GameUpsertWithoutQuestionsInput {
   create: GameCreateWithoutQuestionsInput;
 }
 
-export interface QuestionUpsertNestedInput {
-  update: QuestionUpdateDataInput;
-  create: QuestionCreateInput;
+export interface QuestionUpsertWithoutAnswersInput {
+  update: QuestionUpdateWithoutAnswersDataInput;
+  create: QuestionCreateWithoutAnswersInput;
+}
+
+export interface AnswerUpsertWithWhereUniqueWithoutPlayerInput {
+  where: AnswerWhereUniqueInput;
+  update: AnswerUpdateWithoutPlayerDataInput;
+  create: AnswerCreateWithoutPlayerInput;
+}
+
+export interface PlayerUpsertWithWhereUniqueWithoutGameInput {
+  where: PlayerWhereUniqueInput;
+  update: PlayerUpdateWithoutGameDataInput;
+  create: PlayerCreateWithoutGameInput;
+}
+
+export interface PlayerScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  score?: Maybe<Int>;
+  score_not?: Maybe<Int>;
+  score_in?: Maybe<Int[] | Int>;
+  score_not_in?: Maybe<Int[] | Int>;
+  score_lt?: Maybe<Int>;
+  score_lte?: Maybe<Int>;
+  score_gt?: Maybe<Int>;
+  score_gte?: Maybe<Int>;
+  responseTime?: Maybe<Int>;
+  responseTime_not?: Maybe<Int>;
+  responseTime_in?: Maybe<Int[] | Int>;
+  responseTime_not_in?: Maybe<Int[] | Int>;
+  responseTime_lt?: Maybe<Int>;
+  responseTime_lte?: Maybe<Int>;
+  responseTime_gt?: Maybe<Int>;
+  responseTime_gte?: Maybe<Int>;
+  AND?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
+  OR?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
+  NOT?: Maybe<PlayerScalarWhereInput[] | PlayerScalarWhereInput>;
+}
+
+export interface PlayerUpdateManyWithWhereNestedInput {
+  where: PlayerScalarWhereInput;
+  data: PlayerUpdateManyDataInput;
+}
+
+export interface PlayerUpdateManyDataInput {
+  name?: Maybe<String>;
+  score?: Maybe<Int>;
+  responseTime?: Maybe<Int>;
 }
 
 export interface GameUpsertWithWhereUniqueWithoutUserInput {
@@ -1817,7 +1894,7 @@ export interface QuestionUpdateInput {
   title?: Maybe<String>;
   choices?: Maybe<ChoiceUpdateManyWithoutQuestionInput>;
   goodChoice?: Maybe<ChoiceUpdateOneInput>;
-  answers?: Maybe<AnswerUpdateManyInput>;
+  answers?: Maybe<AnswerUpdateManyWithoutQuestionInput>;
   order?: Maybe<Int>;
   user?: Maybe<UserUpdateOneRequiredWithoutQuestionsInput>;
   game?: Maybe<GameUpdateOneRequiredWithoutQuestionsInput>;
@@ -1929,12 +2006,15 @@ export interface NodeNode {
 
 export interface Answer {
   id: ID_Output;
+  createdAt: DateTimeOutput;
 }
 
 export interface AnswerPromise extends Promise<Answer>, Fragmentable {
   id: () => Promise<ID_Output>;
   choice: <T = ChoicePromise>() => T;
   player: <T = PlayerPromise>() => T;
+  question: <T = QuestionPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
 }
 
 export interface AnswerSubscription
@@ -1943,6 +2023,8 @@ export interface AnswerSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   choice: <T = ChoiceSubscription>() => T;
   player: <T = PlayerSubscription>() => T;
+  question: <T = QuestionSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface AnswerNullablePromise
@@ -1951,6 +2033,8 @@ export interface AnswerNullablePromise
   id: () => Promise<ID_Output>;
   choice: <T = ChoicePromise>() => T;
   player: <T = PlayerPromise>() => T;
+  question: <T = QuestionPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
 }
 
 export interface Choice {
@@ -2768,18 +2852,21 @@ export interface AnswerSubscriptionPayloadSubscription
 
 export interface AnswerPreviousValues {
   id: ID_Output;
+  createdAt: DateTimeOutput;
 }
 
 export interface AnswerPreviousValuesPromise
   extends Promise<AnswerPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
 }
 
 export interface AnswerPreviousValuesSubscription
   extends Promise<AsyncIterator<AnswerPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
 export interface ChoiceSubscriptionPayload {
