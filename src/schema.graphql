@@ -24,6 +24,8 @@ type Answer {
   id: ID!
   choice: Choice!
   player: Player!
+  question: Question!
+  createdAt: DateTime!
 }
 
 type Question {
@@ -104,7 +106,7 @@ type Mutation {
   deleteChoice(choiceId: ID!): Choice!
   updateChoice(choiceId: ID!, data: ChoiceInput): Choice!
   newPlayer(gameId: ID!, name: String!): Player!
-  newAnswer(choiceId: ID!, playerId: ID!): Answer!
+  newAnswer(choiceId: ID!, playerId: ID!, questionId: ID!): Answer!
 }
 
 type Subscription {

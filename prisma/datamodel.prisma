@@ -11,6 +11,8 @@ type Answer {
   id: ID! @id
   choice: Choice!
   player: Player!
+  question: Question! @relation(name: "QuestionAnswers")
+  createdAt: DateTime! @createdAt
 }
 
 type Question {
@@ -19,7 +21,7 @@ type Question {
   title: String!
   choices: [Choice!]! @relation(name: "QuestionChoices")
   goodChoice: Choice @relation(link: INLINE, name: "QuestionGoodChoice")
-  answers: [Answer!]!
+  answers: [Answer!]! @relation(name: "QuestionAnswers")
   order: Int!
   user: User!
   game: Game! @relation(name: "GameQuestions")
