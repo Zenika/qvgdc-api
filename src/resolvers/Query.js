@@ -1,5 +1,23 @@
 const { getUserId } = require("../utils");
 
+async function players(parent, args, context, info) {
+  const players = await context.prisma.game({ id: args.gameId }).players();
+
+  return players;
+}
+
+async function player(parent, args, context, info) {
+  const where = {
+    id: args.playerId
+  };
+
+  const player = await context.prisma.player({
+    where
+  });
+
+  return player;
+}
+
 async function games(parent, args, context, info) {
   const where = {
     open: args.open
@@ -68,5 +86,7 @@ module.exports = {
   me,
   questions,
   question,
-  choices
+  choices,
+  player,
+  players
 };
