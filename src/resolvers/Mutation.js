@@ -265,7 +265,7 @@ async function newAnswer(parent, args, context, info) {
           ? 1
           : player.score + 1
         : player.score,
-    responseTime: responseTimeFinal
+    responseTime: Math.floor(responseTimeFinal)
   };
 
   const playerupdate = await context.prisma.updatePlayer({
