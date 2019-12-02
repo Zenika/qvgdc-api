@@ -31,6 +31,8 @@ type Answer {
   id: ID!
   choice: Choice!
   player: Player!
+  question: Question!
+  createdAt: DateTime!
 }
 
 type AnswerConnection {
@@ -43,11 +45,7 @@ input AnswerCreateInput {
   id: ID
   choice: ChoiceCreateOneWithoutAnswersInput!
   player: PlayerCreateOneWithoutAnswersInput!
-}
-
-input AnswerCreateManyInput {
-  create: [AnswerCreateInput!]
-  connect: [AnswerWhereUniqueInput!]
+  question: QuestionCreateOneWithoutAnswersInput!
 }
 
 input AnswerCreateManyWithoutChoiceInput {
@@ -60,14 +58,27 @@ input AnswerCreateManyWithoutPlayerInput {
   connect: [AnswerWhereUniqueInput!]
 }
 
+input AnswerCreateManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  connect: [AnswerWhereUniqueInput!]
+}
+
 input AnswerCreateWithoutChoiceInput {
   id: ID
   player: PlayerCreateOneWithoutAnswersInput!
+  question: QuestionCreateOneWithoutAnswersInput!
 }
 
 input AnswerCreateWithoutPlayerInput {
   id: ID
   choice: ChoiceCreateOneWithoutAnswersInput!
+  question: QuestionCreateOneWithoutAnswersInput!
+}
+
+input AnswerCreateWithoutQuestionInput {
+  id: ID
+  choice: ChoiceCreateOneWithoutAnswersInput!
+  player: PlayerCreateOneWithoutAnswersInput!
 }
 
 type AnswerEdge {
@@ -78,10 +89,13 @@ type AnswerEdge {
 enum AnswerOrderByInput {
   id_ASC
   id_DESC
+  createdAt_ASC
+  createdAt_DESC
 }
 
 type AnswerPreviousValues {
   id: ID!
+  createdAt: DateTime!
 }
 
 input AnswerScalarWhereInput {
@@ -99,6 +113,14 @@ input AnswerScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
   AND: [AnswerScalarWhereInput!]
   OR: [AnswerScalarWhereInput!]
   NOT: [AnswerScalarWhereInput!]
@@ -122,25 +144,10 @@ input AnswerSubscriptionWhereInput {
   NOT: [AnswerSubscriptionWhereInput!]
 }
 
-input AnswerUpdateDataInput {
-  choice: ChoiceUpdateOneRequiredWithoutAnswersInput
-  player: PlayerUpdateOneRequiredWithoutAnswersInput
-}
-
 input AnswerUpdateInput {
   choice: ChoiceUpdateOneRequiredWithoutAnswersInput
   player: PlayerUpdateOneRequiredWithoutAnswersInput
-}
-
-input AnswerUpdateManyInput {
-  create: [AnswerCreateInput!]
-  update: [AnswerUpdateWithWhereUniqueNestedInput!]
-  upsert: [AnswerUpsertWithWhereUniqueNestedInput!]
-  delete: [AnswerWhereUniqueInput!]
-  connect: [AnswerWhereUniqueInput!]
-  set: [AnswerWhereUniqueInput!]
-  disconnect: [AnswerWhereUniqueInput!]
-  deleteMany: [AnswerScalarWhereInput!]
+  question: QuestionUpdateOneRequiredWithoutAnswersInput
 }
 
 input AnswerUpdateManyWithoutChoiceInput {
@@ -165,17 +172,30 @@ input AnswerUpdateManyWithoutPlayerInput {
   deleteMany: [AnswerScalarWhereInput!]
 }
 
+input AnswerUpdateManyWithoutQuestionInput {
+  create: [AnswerCreateWithoutQuestionInput!]
+  delete: [AnswerWhereUniqueInput!]
+  connect: [AnswerWhereUniqueInput!]
+  set: [AnswerWhereUniqueInput!]
+  disconnect: [AnswerWhereUniqueInput!]
+  update: [AnswerUpdateWithWhereUniqueWithoutQuestionInput!]
+  upsert: [AnswerUpsertWithWhereUniqueWithoutQuestionInput!]
+  deleteMany: [AnswerScalarWhereInput!]
+}
+
 input AnswerUpdateWithoutChoiceDataInput {
   player: PlayerUpdateOneRequiredWithoutAnswersInput
+  question: QuestionUpdateOneRequiredWithoutAnswersInput
 }
 
 input AnswerUpdateWithoutPlayerDataInput {
   choice: ChoiceUpdateOneRequiredWithoutAnswersInput
+  question: QuestionUpdateOneRequiredWithoutAnswersInput
 }
 
-input AnswerUpdateWithWhereUniqueNestedInput {
-  where: AnswerWhereUniqueInput!
-  data: AnswerUpdateDataInput!
+input AnswerUpdateWithoutQuestionDataInput {
+  choice: ChoiceUpdateOneRequiredWithoutAnswersInput
+  player: PlayerUpdateOneRequiredWithoutAnswersInput
 }
 
 input AnswerUpdateWithWhereUniqueWithoutChoiceInput {
@@ -188,10 +208,9 @@ input AnswerUpdateWithWhereUniqueWithoutPlayerInput {
   data: AnswerUpdateWithoutPlayerDataInput!
 }
 
-input AnswerUpsertWithWhereUniqueNestedInput {
+input AnswerUpdateWithWhereUniqueWithoutQuestionInput {
   where: AnswerWhereUniqueInput!
-  update: AnswerUpdateDataInput!
-  create: AnswerCreateInput!
+  data: AnswerUpdateWithoutQuestionDataInput!
 }
 
 input AnswerUpsertWithWhereUniqueWithoutChoiceInput {
@@ -204,6 +223,12 @@ input AnswerUpsertWithWhereUniqueWithoutPlayerInput {
   where: AnswerWhereUniqueInput!
   update: AnswerUpdateWithoutPlayerDataInput!
   create: AnswerCreateWithoutPlayerInput!
+}
+
+input AnswerUpsertWithWhereUniqueWithoutQuestionInput {
+  where: AnswerWhereUniqueInput!
+  update: AnswerUpdateWithoutQuestionDataInput!
+  create: AnswerCreateWithoutQuestionInput!
 }
 
 input AnswerWhereInput {
@@ -223,6 +248,15 @@ input AnswerWhereInput {
   id_not_ends_with: ID
   choice: ChoiceWhereInput
   player: PlayerWhereInput
+  question: QuestionWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
   AND: [AnswerWhereInput!]
   OR: [AnswerWhereInput!]
   NOT: [AnswerWhereInput!]
@@ -1240,7 +1274,7 @@ input QuestionCreateInput {
   title: String!
   choices: ChoiceCreateManyWithoutQuestionInput
   goodChoice: ChoiceCreateOneInput
-  answers: AnswerCreateManyInput
+  answers: AnswerCreateManyWithoutQuestionInput
   order: Int!
   user: UserCreateOneWithoutQuestionsInput!
   game: GameCreateOneWithoutQuestionsInput!
@@ -1262,9 +1296,26 @@ input QuestionCreateOneInput {
   connect: QuestionWhereUniqueInput
 }
 
+input QuestionCreateOneWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  connect: QuestionWhereUniqueInput
+}
+
 input QuestionCreateOneWithoutChoicesInput {
   create: QuestionCreateWithoutChoicesInput
   connect: QuestionWhereUniqueInput
+}
+
+input QuestionCreateWithoutAnswersInput {
+  id: ID
+  duration: Int!
+  title: String!
+  choices: ChoiceCreateManyWithoutQuestionInput
+  goodChoice: ChoiceCreateOneInput
+  order: Int!
+  user: UserCreateOneWithoutQuestionsInput!
+  game: GameCreateOneWithoutQuestionsInput!
+  launched: DateTime
 }
 
 input QuestionCreateWithoutChoicesInput {
@@ -1272,7 +1323,7 @@ input QuestionCreateWithoutChoicesInput {
   duration: Int!
   title: String!
   goodChoice: ChoiceCreateOneInput
-  answers: AnswerCreateManyInput
+  answers: AnswerCreateManyWithoutQuestionInput
   order: Int!
   user: UserCreateOneWithoutQuestionsInput!
   game: GameCreateOneWithoutQuestionsInput!
@@ -1285,7 +1336,7 @@ input QuestionCreateWithoutGameInput {
   title: String!
   choices: ChoiceCreateManyWithoutQuestionInput
   goodChoice: ChoiceCreateOneInput
-  answers: AnswerCreateManyInput
+  answers: AnswerCreateManyWithoutQuestionInput
   order: Int!
   user: UserCreateOneWithoutQuestionsInput!
   launched: DateTime
@@ -1297,7 +1348,7 @@ input QuestionCreateWithoutUserInput {
   title: String!
   choices: ChoiceCreateManyWithoutQuestionInput
   goodChoice: ChoiceCreateOneInput
-  answers: AnswerCreateManyInput
+  answers: AnswerCreateManyWithoutQuestionInput
   order: Int!
   game: GameCreateOneWithoutQuestionsInput!
   launched: DateTime
@@ -1410,7 +1461,7 @@ input QuestionUpdateDataInput {
   title: String
   choices: ChoiceUpdateManyWithoutQuestionInput
   goodChoice: ChoiceUpdateOneInput
-  answers: AnswerUpdateManyInput
+  answers: AnswerUpdateManyWithoutQuestionInput
   order: Int
   user: UserUpdateOneRequiredWithoutQuestionsInput
   game: GameUpdateOneRequiredWithoutQuestionsInput
@@ -1422,7 +1473,7 @@ input QuestionUpdateInput {
   title: String
   choices: ChoiceUpdateManyWithoutQuestionInput
   goodChoice: ChoiceUpdateOneInput
-  answers: AnswerUpdateManyInput
+  answers: AnswerUpdateManyWithoutQuestionInput
   order: Int
   user: UserUpdateOneRequiredWithoutQuestionsInput
   game: GameUpdateOneRequiredWithoutQuestionsInput
@@ -1481,6 +1532,13 @@ input QuestionUpdateOneInput {
   connect: QuestionWhereUniqueInput
 }
 
+input QuestionUpdateOneRequiredWithoutAnswersInput {
+  create: QuestionCreateWithoutAnswersInput
+  update: QuestionUpdateWithoutAnswersDataInput
+  upsert: QuestionUpsertWithoutAnswersInput
+  connect: QuestionWhereUniqueInput
+}
+
 input QuestionUpdateOneRequiredWithoutChoicesInput {
   create: QuestionCreateWithoutChoicesInput
   update: QuestionUpdateWithoutChoicesDataInput
@@ -1488,11 +1546,22 @@ input QuestionUpdateOneRequiredWithoutChoicesInput {
   connect: QuestionWhereUniqueInput
 }
 
+input QuestionUpdateWithoutAnswersDataInput {
+  duration: Int
+  title: String
+  choices: ChoiceUpdateManyWithoutQuestionInput
+  goodChoice: ChoiceUpdateOneInput
+  order: Int
+  user: UserUpdateOneRequiredWithoutQuestionsInput
+  game: GameUpdateOneRequiredWithoutQuestionsInput
+  launched: DateTime
+}
+
 input QuestionUpdateWithoutChoicesDataInput {
   duration: Int
   title: String
   goodChoice: ChoiceUpdateOneInput
-  answers: AnswerUpdateManyInput
+  answers: AnswerUpdateManyWithoutQuestionInput
   order: Int
   user: UserUpdateOneRequiredWithoutQuestionsInput
   game: GameUpdateOneRequiredWithoutQuestionsInput
@@ -1504,7 +1573,7 @@ input QuestionUpdateWithoutGameDataInput {
   title: String
   choices: ChoiceUpdateManyWithoutQuestionInput
   goodChoice: ChoiceUpdateOneInput
-  answers: AnswerUpdateManyInput
+  answers: AnswerUpdateManyWithoutQuestionInput
   order: Int
   user: UserUpdateOneRequiredWithoutQuestionsInput
   launched: DateTime
@@ -1515,7 +1584,7 @@ input QuestionUpdateWithoutUserDataInput {
   title: String
   choices: ChoiceUpdateManyWithoutQuestionInput
   goodChoice: ChoiceUpdateOneInput
-  answers: AnswerUpdateManyInput
+  answers: AnswerUpdateManyWithoutQuestionInput
   order: Int
   game: GameUpdateOneRequiredWithoutQuestionsInput
   launched: DateTime
@@ -1534,6 +1603,11 @@ input QuestionUpdateWithWhereUniqueWithoutUserInput {
 input QuestionUpsertNestedInput {
   update: QuestionUpdateDataInput!
   create: QuestionCreateInput!
+}
+
+input QuestionUpsertWithoutAnswersInput {
+  update: QuestionUpdateWithoutAnswersDataInput!
+  create: QuestionCreateWithoutAnswersInput!
 }
 
 input QuestionUpsertWithoutChoicesInput {
