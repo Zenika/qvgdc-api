@@ -6,6 +6,8 @@ type Query {
   question(questionId: ID!): Question!
   questions(gameId: ID!): [Question!]!
   choices(questionId: ID!): [Choice!]!
+  player(playerId: ID!): Player!
+  players(gameId: ID!): [Player!]!
   me: User!
 }
 
