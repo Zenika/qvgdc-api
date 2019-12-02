@@ -96,7 +96,7 @@ async function newQuestion(parent, args, context, info) {
   const question = await context.prisma.createQuestion({
     title: args.title,
     duration: args.duration,
-    order: questions.length,
+    order: questions.length + 1,
     game: { connect: { id: args.gameId } },
     user: { connect: { id: userId } }
   });
