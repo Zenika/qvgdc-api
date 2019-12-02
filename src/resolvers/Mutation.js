@@ -261,7 +261,7 @@ async function newAnswer(parent, args, context, info) {
   const updatingPlayer = {
     score:
       goodChoice.id === args.choiceId
-        ? !player.score
+        ? player.score === null
           ? 1
           : player.score + 1
         : player.score,
