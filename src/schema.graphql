@@ -107,4 +107,5 @@ type Mutation {
 
 type Subscription {
   updatedGame(gameId: ID!): Game
+  updatedPlayer(playerId: ID!): Player
 }

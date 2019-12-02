@@ -16,6 +16,25 @@ const updatedGame = {
   }
 };
 
+function updatedPlayerSubscribe(parent, args, context, info) {
+  return context.prisma.$subscribe
+    .player({
+      mutation_in: ["UPDATED"],
+      node: {
+        id: args.playerId
+      }
+    })
+    .node();
+}
+
+const updatedPlayer = {
+  subscribe: updatedPlayerSubscribe,
+  resolve: payload => {
+    return payload;
+  }
+};
+
 module.exports = {
-  updatedGame
+  updatedGame,
+  updatedPlayer
 };
