@@ -47,8 +47,6 @@ async function choices(parent, args, context, info) {
 }
 
 async function game(parent, args, context, info) {
-  const userId = getUserId(context);
-
   const game = await context.prisma.game({
     id: args.gameId
   });
