@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const { prisma } = require("./generated/prisma-client");
 const { GraphQLServer } = require("graphql-yoga");
 const Query = require("./resolvers/Query");
@@ -19,23 +21,23 @@ const resolvers = {
   Answer,
   Question,
   User,
-  Game
+  Game,
 };
 
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
   resolvers,
-  context: request => {
+  context: (request) => {
     return {
       ...request,
-      prisma
+      prisma,
     };
-  }
+  },
 });
 
 server.start(
   {
-    port: 8080
+    port: 8080,
   },
   () => console.log("Server running on port 8080")
 );
