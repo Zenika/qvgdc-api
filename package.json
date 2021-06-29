@@ -5,13 +5,15 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^1.19.3",
-    "prisma-client-lib": "^1.34.8"
+    "prisma-client-lib": "^1.34.8",
+    "yargs": "^17.0.1"
   },
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "adduser": "node src/addrootuser.js"
   }
 }
