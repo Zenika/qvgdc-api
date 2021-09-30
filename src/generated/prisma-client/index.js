@@ -6,33 +6,33 @@ var typeDefs = require("./prisma-schema").typeDefs;
 var models = [
   {
     name: "Player",
-    embedded: false
+    embedded: false,
   },
   {
     name: "Answer",
-    embedded: false
+    embedded: false,
   },
   {
     name: "Question",
-    embedded: false
+    embedded: false,
   },
   {
     name: "Choice",
-    embedded: false
+    embedded: false,
   },
   {
     name: "Game",
-    embedded: false
+    embedded: false,
   },
   {
     name: "User",
-    embedded: false
-  }
+    embedded: false,
+  },
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
   endpoint: `${process.env["API_URL"]}`,
-  secret: `${process.env["API_SECRET"]}`
+  secret: `${process.env["API_SECRET"]}`,
 });
 exports.prisma = new exports.Prisma();
