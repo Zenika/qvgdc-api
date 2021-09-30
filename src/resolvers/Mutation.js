@@ -17,8 +17,20 @@ async function login(parent, args, context, info) {
 
   return {
     token,
-    user
+    user,
   };
+}
+
+async function addUser(_, args, context) {
+  const userId = getUserId(context);
+
+  const password = await bcrypt.hash(args.password, 10);
+  const newUser = await context.prisma.createUser({
+    email: args.email,
+    password,
+  });
+
+  return newUser;
 }
 
 async function newGame(parent, args, context, info) {
@@ -27,8 +39,8 @@ async function newGame(parent, args, context, info) {
   const game = await context.prisma.createGame({
     title: args.title,
     user: {
-      connect: { id: userId }
-    }
+      connect: { id: userId },
+    },
   });
 
   return game;
@@ -38,7 +50,7 @@ async function deleteGame(parent, args, context, info) {
   const userId = getUserId(context);
 
   const game = await context.prisma.deleteGame({
-    id: args.gameId
+    id: args.gameId,
   });
 
   return game;
@@ -69,23 +81,23 @@ async function updateGame(parent, args, context, info) {
     args.data.currentQuestion !== null
   ) {
     updateObject["currentQuestion"] = {
-      connect: { id: args.data.currentQuestion }
+      connect: { id: args.data.currentQuestion },
     };
   }
 
   if (args.data.currentQuestion === null) {
     updateObject["currentQuestion"] = {
-      disconnect: true
+      disconnect: true,
     };
   }
 
   const game = await context.prisma.updateGame({
     data: {
-      ...updateObject
+      ...updateObject,
     },
     where: {
-      id: args.gameId
-    }
+      id: args.gameId,
+    },
   });
 
   if (
@@ -94,11 +106,11 @@ async function updateGame(parent, args, context, info) {
   ) {
     const question = await context.prisma.updateQuestion({
       data: {
-        launched: new Date().toISOString()
+        launched: new Date().toISOString(),
       },
       where: {
-        id: args.data.currentQuestion
-      }
+        id: args.data.currentQuestion,
+      },
     });
   }
 
@@ -114,7 +126,7 @@ async function newQuestion(parent, args, context, info) {
     duration: args.duration,
     order: questions.length + 1,
     game: { connect: { id: args.gameId } },
-    user: { connect: { id: userId } }
+    user: { connect: { id: userId } },
   });
 
   return question;
@@ -124,7 +136,7 @@ async function deleteQuestion(parent, args, context, info) {
   const userId = getUserId(context);
 
   const question = await context.prisma.deleteQuestion({
-    id: args.questionId
+    id: args.questionId,
   });
 
   return question;
@@ -148,11 +160,11 @@ function updateQuestion(parent, args, context, info) {
 
   return context.prisma.updateQuestion({
     data: {
-      ...updateObject
+      ...updateObject,
     },
     where: {
-      id: args.questionId
-    }
+      id: args.questionId,
+    },
   });
 }
 
@@ -162,7 +174,7 @@ function newChoice(parent, args, context, info) {
   return context.prisma.createChoice({
     title: args.title,
     question: { connect: { id: args.questionId } },
-    user: { connect: { id: userId } }
+    user: { connect: { id: userId } },
   });
 }
 
@@ -170,7 +182,7 @@ async function deleteChoice(parent, args, context, info) {
   const userId = getUserId(context);
 
   const choice = await context.prisma.deleteChoice({
-    id: args.choiceId
+    id: args.choiceId,
   });
 
   return choice;
@@ -187,23 +199,23 @@ function updateChoice(parent, args, context, info) {
 
   return context.prisma.updateChoice({
     data: {
-      ...updateObject
+      ...updateObject,
     },
     where: {
-      id: args.choiceId
-    }
+      id: args.choiceId,
+    },
   });
 }
 
 async function newPlayer(parent, args, context, info) {
   const playerExists = await context.prisma.$exists.player({
     game: { id: args.gameId },
-    name: args.name
+    name: args.name,
   });
 
   const notOpenGameId = await context.prisma.$exists.game({
     id: args.gameId,
-    open: false
+    open: false,
   });
 
   if (playerExists || notOpenGameId) {
@@ -212,7 +224,7 @@ async function newPlayer(parent, args, context, info) {
 
   return context.prisma.createPlayer({
     name: args.name,
-    game: { connect: { id: args.gameId } }
+    game: { connect: { id: args.gameId } },
   });
 }
 
@@ -220,13 +232,13 @@ async function newAnswer(parent, args, context, info) {
   const answer = await context.prisma.createAnswer({
     choice: { connect: { id: args.choiceId } },
     player: { connect: { id: args.playerId } },
-    question: { connect: { id: args.questionId } }
+    question: { connect: { id: args.questionId } },
   });
 
   const [player, oldAnswers, goodChoice] = await Promise.all([
     context.prisma.player({ id: args.playerId }),
     context.prisma.player({ id: args.playerId }).answers(),
-    context.prisma.question({ id: args.questionId }).goodChoice()
+    context.prisma.question({ id: args.questionId }).goodChoice(),
   ]);
 
   const responseTimes = [];
@@ -237,14 +249,14 @@ async function newAnswer(parent, args, context, info) {
     const [
       associatedQuestion,
       associatedChoice,
-      associatedGoodChoice
+      associatedGoodChoice,
     ] = await Promise.all([
       context.prisma.answer({ id: val.id }).question(),
       context.prisma.answer({ id: val.id }).choice(),
       context.prisma
         .answer({ id: val.id })
         .question()
-        .goodChoice()
+        .goodChoice(),
     ]);
 
     if (associatedChoice.id !== associatedGoodChoice.id) continue;
@@ -265,14 +277,14 @@ async function newAnswer(parent, args, context, info) {
           ? 1
           : player.score + 1
         : player.score,
-    responseTime: Math.floor(responseTimeFinal)
+    responseTime: Math.floor(responseTimeFinal),
   };
 
   const playerupdate = await context.prisma.updatePlayer({
     data: { ...updatingPlayer },
     where: {
-      id: args.playerId
-    }
+      id: args.playerId,
+    },
   });
 
   return answer;
@@ -290,5 +302,6 @@ module.exports = {
   newPlayer,
   newAnswer,
   updateGame,
-  deleteGame
+  deleteGame,
+  addUser,
 };

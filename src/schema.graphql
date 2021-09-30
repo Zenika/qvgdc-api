@@ -107,6 +107,7 @@ type Mutation {
   updateChoice(choiceId: ID!, data: ChoiceInput): Choice!
   newPlayer(gameId: ID!, name: String!): Player!
   newAnswer(choiceId: ID!, playerId: ID!, questionId: ID!): Answer!
+  addUser(email: String!, password: String!): User
 }
 
 type Subscription {
