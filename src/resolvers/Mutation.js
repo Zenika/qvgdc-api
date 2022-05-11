@@ -46,6 +46,63 @@ async function newGame(parent, args, context, info) {
   return game;
 }
 
+async function newJsonGame(parent, args, context, info) {
+  const userId = getUserId(context);
+  const connectUser = {
+    connect: { id: userId },
+  }
+
+  const futurGame = JSON.parse(args.json)
+  let game = null
+  const savedQuestions = []
+  const savedChoices = []
+  try{
+    game = await context.prisma.createGame({
+      title: futurGame.title,
+      user: connectUser
+    });
+    for(const [index, question] of futurGame.questions.entries()){
+      const savedQuestion = await context.prisma.createQuestion({
+        title: question.title,
+        duration: question.duration,
+        order: index + 1,
+        game: { connect: { id: game.id } },
+        user: connectUser
+      })
+      savedQuestions.push(savedQuestion)
+      for(let choice of question.choices){
+        const savedChoice = await context.prisma.createChoice({
+          title: choice.title,
+          question: { connect: { id: savedQuestion.id } },
+          user: connectUser
+        })
+        savedChoices.push(savedChoice)
+        if(choice.valid){
+          await context.prisma.updateQuestion({
+            data: {
+              goodChoice: {connect: {id: savedChoice.id}},
+            },
+            where: {
+              id: savedQuestion.id,
+            },
+          });
+        }
+      }
+    }
+  }
+  catch (e){
+    for(const choice of savedChoices){
+      await context.prisma.deleteChoice({id: choice.id})
+    }
+    for(const question of savedQuestions){
+      await context.prisma.deleteQuestion({id: question.id})
+    }
+    await context.prisma.deleteGame({id: game.id})
+    throw e
+  }
+  return game;
+}
+
 async function deleteGame(parent, args, context, info) {
   const userId = getUserId(context);
 
@@ -293,6 +350,7 @@ async function newAnswer(parent, args, context, info) {
 module.exports = {
   login,
   newGame,
+  newJsonGame,
   newQuestion,
   deleteQuestion,
   updateQuestion,
