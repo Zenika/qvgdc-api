@@ -97,6 +97,7 @@ type User {
 type Mutation {
   login(email: String!, password: String!): AuthPayload
   newGame(title: String!): Game!
+  newJsonGame(json: String!): Game!
   deleteGame(gameId: ID!): Game!
   updateGame(gameId: ID!, data: GameInput): Game!
   newQuestion(gameId: ID!, title: String!, duration: Int!): Question!
