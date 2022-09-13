@@ -32,6 +32,7 @@ var models = [
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://eu1.prisma.sh/contact-738d10/qvgdc-api/dev`
+  endpoint: `${process.env["API_URL"]}`,
+  secret: `${process.env["API_SECRET"]}`
 });
 exports.prisma = new exports.Prisma();

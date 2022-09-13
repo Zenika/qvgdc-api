@@ -1,10 +1,12 @@
 # The HTTP endpoint for your Prisma API
 #endpoint: ""
 #endpoint: ""
-endpoint: https://eu1.prisma.sh/contact-738d10/qvgdc-api/dev
+endpoint: ${env:API_URL}
 
 # Points to the file that contains your datamodel
 datamodel: datamodel.prisma
+
+secret: ${env:API_SECRET}
 
 # Specifies language & location for the generated Prisma client
 generate:
